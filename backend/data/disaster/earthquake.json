@@ -1,0 +1,14 @@
+{
+  "title": "Earthquake — Immediate Actions",
+  "summary": "If shaking occurs, protect yourself and seek safe shelter when it is safe to move.",
+  "steps": [
+    "Drop, Cover, and Hold On — get under sturdy furniture until shaking stops.",
+    "If outdoors, move to an open area away from buildings and power lines.",
+    "When safe, evacuate to open ground or listed shelter and call for help if injured."
+  ],
+  "sms_template": "Earthquake at {location}. Evacuate to nearest shelter. Are you safe? Reply YES/NO.",
+  "warnings": [
+    "Do not use elevators.",
+    "Expect aftershocks."
+  ]
+}

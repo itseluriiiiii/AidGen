@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AidGen — Offline Disaster Assistant</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+  <div class="app">
+    <main>
+      <div class="aidgen-container">
+    <div class="header">
+        <span class="dot"></span>
+        <span class="title">AIDGEN</span>
+    </div>
+
+    <div class="prompt">
+        <h1>What is your emergency?</h1>
+        <p>Tap to alert responders immediately</p>
+    </div>
+
+    <div class="button-grid">
+        <div class="button-card earthquake" onclick="window.location.href='earthquake.html'">
+            <span class="material-symbols-outlined icon">earthquake</span>
+            <span class="label">EARTHQUAKE</span>
+        </div>
+
+        <div class="button-card fire" onclick="window.location.href='fire.html'">
+            <span class="material-symbols-outlined icon">local_fire_department</span>
+            <span class="label">FIRE</span>
+        </div>
+
+        <div class="button-card flood" onclick="window.location.href='flood.html'">
+            <span class="material-symbols-outlined icon">water</span> 
+            <span class="label">FLOOD</span>
+        </div>
+
+        <div class="button-card tsunami" onclick="window.location.href='tsunami.html'">
+            <span class="material-symbols-outlined icon">tsunami</span>
+            <span class="label">TSUNAMI</span>
+        </div>
+    </div>
+</div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>

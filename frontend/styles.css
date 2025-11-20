@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.aidgen-container {
+    width: 100%;
+    max-width: 500px; /* Reduced from 1300px for better mobile-first design */
+    min-height: 100vh;
+    background-color: white;
+    margin: 0 auto; /* Center the container */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    position: relative;
+    overflow: hidden;
+    padding: 0; 
+    border-radius: 0; 
+    box-shadow: none; 
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 10px 20px; 
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #9333ea; 
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.2em;
+    flex-grow: 1;
+}
+
+.notification-icon {
+    font-size: 1.4em;
+    color: #4a4a4a;
+}
+
+/* Prompt Text Styling */
+.prompt {
+    text-align: left;
+    padding: 0 20px 20px 20px; 
+    margin: 0;
+}
+
+.prompt h1 {
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.prompt p {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+/* Button Grid Styling */
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    padding: 0 20px 20px 20px; 
+    gap: 15px;
+    flex-grow: 1; 
+    grid-template-rows: 1fr 1fr; 
+}
+
+.button-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    padding: 10px;
+    text-align: center;
+    min-height: 100px; 
+}
+
+.button-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Specific Button Colors and Gradient Effects */
+.earthquake {
+    background: linear-gradient(145deg, #211832, #5C3E94); 
+    box-shadow: 0 5px 10px rgba(255, 153, 51, 0.4);
+}
+
+.fire {
+    background: linear-gradient(145deg, #3E0703, #BF092F); 
+    box-shadow: 0 5px 10px rgba(220, 53, 69, 0.4);
+}
+
+.flood {
+    background: linear-gradient(145deg, #04093f, #161179); 
+    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
+}
+
+.tsunami {
+    background: linear-gradient(145deg, #06202B, #077A7D); 
+    box-shadow: 0 5px 10px rgba(23, 162, 184, 0.4);
+}
+
+.button-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

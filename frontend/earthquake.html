@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthquake Emergency - AidGen</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --text-primary: #2D3748;
+            --text-secondary: #718096;
+            --bg-color: #F7FAFC;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
+            --emergency-tag: #5C3E94;
+            --sos-button: #FF4B4B;
+            --what-to-do-bg: #FFFFFF;
+            --button-hover: rgba(0, 0, 0, 0.05);
+            --sos-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #F5F1F9;
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .aidgen-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #b7a3e372;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button, .notification-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover, .notification-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .selected-emergency {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .emergency-tag {
+            color: var(--emergency-tag);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .emergency-type {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .emergency-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #211832;
+            border-radius: 10px;
+            color: var(--emergency-tag);
+        }
+
+        .sos-button {
+            background-color: var(--sos-button);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin: 0 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--sos-shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: calc(100% - 40px);
+        }
+
+        .sos-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(255, 75, 75, 0.4);
+        }
+
+        .sos-content {
+            text-align: left;
+        }
+
+        .sos-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .sos-subtext {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .sos-icon {
+            font-size: 36px;
+            opacity: 0.9;
+        }
+
+        .what-to-do {
+            background-color: var(--what-to-do-bg);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .what-to-do:hover {
+            background-color: #F8F9FA;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .what-to-do-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .book-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            background-color: #F0F4FF;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4C6FFF;
+            flex-shrink: 0;
+        }
+
+        .what-to-do-text {
+            text-align: left;
+        }
+
+        .what-to-do-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .what-to-do-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .arrow-icon {
+            color: var(--text-secondary);
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        .live-assistance {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1A202C;
+            color: white;
+            padding: 16px 20px 24px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .live-assistance-text {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .live-assistance-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            background-color: #2D3748;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .control-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .control-button:active {
+            transform: translateY(1px);
+        }
+
+        @media (max-width: 480px) {
+            .selected-emergency,
+            .sos-button,
+            .what-to-do {
+                margin-left: 16px;
+                margin-right: 16px;
+                width: calc(100% - 32px);
+            }
+            
+            .sos-button {
+                padding: 24px 20px;
+            }
+            
+            .sos-text {
+                font-size: 22px;
+            }
+            
+            .sos-icon {
+                font-size: 32px;
+            }
+            
+            .live-assistance-controls {
+                gap: 8px;
+            }
+            
+            .control-button {
+                padding: 8px 14px;
+                font-size: 13px;
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="aidgen-container">
+        <!-- Header with navigation -->
+        <header class="header">
+            <button class="back-button" onclick="window.history.back()" aria-label="Go back">
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            </button>
+            <h1 class="header-title">AIDGEN</h1>
+            <button class="notification-button" aria-label="View notifications">
+                <span class="material-symbols-outlined" aria-hidden="true">notifications_none</span>
+            </button>
+        </header>
+
+        <!-- Selected Emergency Card -->
+        <section class="selected-emergency" aria-labelledby="emergency-heading">
+            <p class="emergency-tag" id="emergency-heading">SELECTED EMERGENCY</p>
+            <div class="emergency-type">
+                <span class="emergency-icon" role="img" aria-hidden="true">🌋</span>
+                <span>EARTHQUAKE</span>
+            </div>
+        </section>
+
+        <!-- SOS Button -->
+        <button class="sos-button" id="sos-button" aria-label="Send SOS alert">
+            <div class="sos-content">
+                <div class="sos-text">SEND SOS</div>
+                <div class="sos-subtext">Share Live Location</div>
+            </div>
+            <div class="sos-icon" role="img" aria-hidden="true">📡</div>
+        </button>
+
+        <!-- What to do Section -->
+        <a href="#safety-guide" class="what-to-do" id="safety-guide-link">
+            <div class="what-to-do-content">
+                <span class="book-icon" role="img" aria-hidden="true">📖</span>
+                <div class="what-to-do-text">
+                    <h2 class="what-to-do-title">What to do?</h2>
+                    <p class="what-to-do-subtitle">Safety guides & first steps</p>
+                </div>
+            </div>
+            <span class="material-symbols-outlined arrow-icon" aria-hidden="true">chevron_right</span>
+        </a>
+    </div>
+
+    <script>
+        // Add SOS button functionality
+        document.getElementById('sos-button').addEventListener('click', function() {
+            // Add your SOS functionality here
+            alert('SOS Alert Sent! Help is on the way!');
+            // In a real app, this would trigger location sharing and emergency services notification
+        });
+    </script>
+</body>

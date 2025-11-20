@@ -1,0 +1,4 @@
+Flask==2.3.2
+requests==2.31.0
+argostranslate==1.10.0
+python-dotenv==1.0.0
