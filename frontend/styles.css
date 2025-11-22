@@ -135,3 +135,70 @@ body {
     transform: scale(0.98);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+#instructions {
+    background-color: #e6e0f2; /* Light purple/lavender color */
+    padding: 10px;
+    border-radius: 12px;
+    width: 800px; /* Adjust as needed */
+    margin: 10px 0;
+    display: none; 
+}
+
+#instructions h3 {
+    /* Styling for the bold title */
+    font-weight: bold;
+    font-size: 1.2em; /* Slightly larger text */
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#instructions ul {
+    margin-top: 10px;
+    list-style-type: disc; 
+    list-style-position: outside; /* Ensures the bullet itself is outside the content box */
+    margin: 0;
+    padding-left: 20px;
+    margin-left: 40px; /* Provides space for the bullet marker */
+}
+
+#instructions li {
+    /* List item styling */
+    margin-bottom: 5px;
+    font-size: 1em;
+    line-height: 1.5;
+    /* CRITICAL FIX 3: Remove all list item indentation */
+    margin-left: 0; 
+    padding-left: 0;
+}
+
+/* Warnings section */
+.warnings {
+    background-color: #FFF5F5;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    border-left: 3px solid #E53E3E;
+}
+/* Status messages */
+.status-message {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 10px 20px;
+    font-size: 0.9em;
+    display: none;
+}
+
+.status-info {
+    background-color: #EBF8FF;
+    color: #2B6CB0;
+    border-left: 3px solid #4299E1;
+}
+
+.status-error {
+    background-color: #FFF5F5;
+    color: #C53030;
+    border-left: 3px solid #F56565;
+}
+

@@ -1,4 +1,6 @@
-// DOM Elements
+// ----------------------------------------------------
+// DOM ELEMENTS
+// ----------------------------------------------------
 const statusEl = document.getElementById("status");
 const resultEl = document.getElementById("result");
 const titleEl = document.getElementById("title");
@@ -7,172 +9,280 @@ const stepsEl = document.getElementById("steps");
 const smsEl = document.getElementById("sms_text");
 const copySmsBtn = document.getElementById("copy_sms");
 const fallbackInfo = document.getElementById("fallback-info");
+const instructionsEl = document.getElementById("instructions");
 
-// Offline fallback data
+// ----------------------------------------------------
+// FALLBACK DATA
+// ----------------------------------------------------
 const FALLBACK_DATA = {
   earthquake: {
     title: "Earthquake Safety",
-    summary: "If you're indoors during an earthquake, stay there. Move away from windows and heavy furniture. Drop, cover, and hold on.",
+    summary: "If you're indoors during an earthquake, stay there. Move away from windows and heavy furniture.",
     steps: [
       "Drop to your hands and knees",
       "Cover your head and neck with your arms",
-      "Hold on to any sturdy furniture until the shaking stops",
-      "If in bed, stay there and cover your head with a pillow",
-      "Stay indoors until the shaking stops and you're sure it's safe to exit"
+      "Hold on to sturdy furniture",
+      "If in bed, cover head with a pillow",
+      "Stay indoors until the shaking stops"
     ],
-    sms_template: "EARTHQUAKE ALERT! I'm at [LOCATION]. The building is shaking. Need immediate assistance. Please help!"
+    sms_template: "EARTHQUAKE ALERT! I'm at [LOCATION]. The building is shaking. Need immediate assistance!"
   },
   fire: {
     title: "Fire Emergency",
-    summary: "In case of fire, remember to stay low to the ground and get out as quickly as possible.",
+    summary: "Stay low and escape quickly.",
     steps: [
-      "Get down low and crawl to the nearest exit",
-      "Feel doors with the back of your hand before opening",
-      "If smoke is present, use an alternate exit",
-      "Meet at the designated meeting point",
-      "Call emergency services once safe"
+      "Crawl low under smoke",
+      "Check door temperature first",
+      "Use alternative exits if needed",
+      "Go to meeting point",
+      "Call emergency services"
     ],
-    sms_template: "FIRE ALERT! Fire at [LOCATION]. Need immediate assistance. Please send help!"
+    sms_template: "FIRE ALERT! Fire at [LOCATION]. Need immediate assistance!"
   },
   flood: {
     title: "Flood Safety",
-    summary: "Move to higher ground immediately if you're in a flood-prone area. Do not walk through moving water.",
+    summary: "Move to higher ground immediately.",
     steps: [
-      "Move to higher ground immediately",
-      "Avoid walking through moving water",
-      "Do not drive into flooded areas",
-      "Stay away from downed power lines",
-      "Follow evacuation orders from local authorities"
+      "Move to higher ground",
+      "Avoid walking in moving water",
+      "Never drive into floodwaters",
+      "Avoid downed power lines",
+      "Follow evacuation orders"
     ],
-    sms_template: "FLOOD ALERT! Trapped at [LOCATION]. Water levels rising. Need immediate assistance!"
+    sms_template: "FLOOD ALERT! Trapped at [LOCATION]. Water rising. Need help!"
   },
   tsunami: {
     title: "Tsunami Warning",
-    summary: "If you're near the coast and feel a strong earthquake, move to higher ground immediately.",
+    summary: "If a strong quake occurs near the coast, move to higher ground immediately.",
     steps: [
-      "Move to higher ground immediately",
-      "Follow tsunami evacuation routes",
-      "Do not go to the shore to watch the waves",
-      "Stay away from the coast until authorities say it's safe",
-      "Listen to emergency alerts for updates"
+      "Go to higher ground immediately",
+      "Follow evacuation signs",
+      "Do NOT go to shore",
+      "Stay away until official all-clear",
+      "Monitor alerts"
     ],
-    sms_template: "TSUNAMI WARNING! At [LOCATION]. Moving to higher ground. Please check on me later."
+    sms_template: "TSUNAMI WARNING! At [LOCATION]. Moving to high ground."
   }
 };
 
-// Set online/offline status
-function setOnline(online) {
-  statusEl.textContent = online ? "ONLINE" : "OFFLINE";
-  statusEl.className = online ? "status online" : "status offline";
+// ----------------------------------------------------
+// ONLINE / OFFLINE INDICATOR
+// ----------------------------------------------------
+function setOnline(isOnline) {
+  statusEl.textContent = isOnline ? "ONLINE" : "OFFLINE";
+  statusEl.className = isOnline ? "status online" : "status offline";
 }
-
-// Initialize online status
 setOnline(navigator.onLine);
-window.addEventListener('online', () => setOnline(true));
-window.addEventListener('offline', () => setOnline(false));
 
-// Handle emergency button clicks
-async function handleEmergency(type) {
-  resultEl.classList.add("hidden");
-  fallbackInfo.classList.add("hidden");
-  
-  try {
-    // Try to get location
-    const position = await getLocation();
-    const location = position ? 
-      `Lat: ${position.coords.latitude.toFixed(4)}, Long: ${position.coords.longitude.toFixed(4)}` : 
-      "[LOCATION UNKNOWN]";
-    
-    // Try to send alert to server if online
-    if (navigator.onLine) {
-      try {
-        const response = await fetch('/api/alert', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type, location })
-        });
-        
-        if (!response.ok) throw new Error('Server error');
-        
-        const data = await response.json();
-        showResult(data, type, location);
-        return;
-      } catch (e) {
-        console.warn('Failed to send alert to server, using fallback data', e);
-      }
-    }
-    
-    // If offline or server error, use fallback data
-    fallbackInfo.classList.remove("hidden");
-    showResult(FALLBACK_DATA[type], type, location);
-    
-  } catch (error) {
-    console.error('Error handling emergency:', error);
-    alert('Error processing your request. Please try again.');
-  }
-}
+window.addEventListener("online", () => setOnline(true));
+window.addEventListener("offline", () => setOnline(false));
 
-// Get current geolocation
+// ----------------------------------------------------
+// GET USER LOCATION
+// ----------------------------------------------------
 function getLocation() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
+    statusEl.textContent = "Getting your location...";
+    statusEl.className = "status-info";
+    statusEl.style.display = "block";
+
     if (!navigator.geolocation) {
-      resolve(null);
-      return;
+      statusEl.textContent = "Geolocation not supported.";
+      statusEl.className = "status-error";
+      return resolve(null);
     }
-    
+
     navigator.geolocation.getCurrentPosition(
-      position => resolve(position),
-      error => {
-        console.warn('Geolocation error:', error);
+      (pos) => {
+        statusEl.style.display = "none";
+        resolve(pos);
+      },
+      () => {
+        statusEl.textContent = "Unable to access location.";
+        statusEl.className = "status-warning";
+        setTimeout(() => (statusEl.style.display = "none"), 3000);
         resolve(null);
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   });
 }
 
-// Display the result
+// ----------------------------------------------------
+// DISPLAY EMERGENCY RESULT
+// ----------------------------------------------------
 function showResult(data, type, location) {
-  // Update the UI with the response data
-  titleEl.textContent = data.title || `${type.charAt(0).toUpperCase() + type.slice(1)} Emergency`;
-  summaryEl.textContent = data.summary || '';
-  
-  // Update steps
-  stepsEl.innerHTML = '';
-  const steps = data.steps || [];
-  steps.forEach(step => {
-    const li = document.createElement('li');
+  titleEl.textContent =
+    data.title || `${type.charAt(0).toUpperCase() + type.slice(1)} Emergency`;
+  summaryEl.textContent = data.summary || "";
+
+  stepsEl.innerHTML = "";
+  (data.steps || []).forEach((step) => {
+    const li = document.createElement("li");
     li.textContent = step;
     stepsEl.appendChild(li);
   });
-  
-  // Update SMS template with location
-  let smsText = data.sms_template || '';
-  smsText = smsText.replace('[LOCATION]', location);
-  smsEl.textContent = smsText;
-  
-  // Show the result section
-  resultEl.classList.remove('hidden');
-  
-  // Scroll to result
-  resultEl.scrollIntoView({ behavior: 'smooth' });
+
+  const sms = (data.sms_template || "").replace("[LOCATION]", location);
+  smsEl.textContent = sms;
+
+  resultEl.classList.remove("hidden");
+  resultEl.scrollIntoView({ behavior: "smooth" });
 }
 
-// Copy SMS to clipboard
-copySmsBtn.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(smsEl.textContent);
-    // Visual feedback
-    const originalText = copySmsBtn.innerHTML;
-    copySmsBtn.innerHTML = '<span class="material-symbols-outlined">check</span>';
-    setTimeout(() => {
-      copySmsBtn.innerHTML = originalText;
-    }, 2000);
-  } catch (err) {
-    console.error('Failed to copy text:', err);
-    alert('Failed to copy SMS to clipboard');
+// ----------------------------------------------------
+// MAIN EMERGENCY HANDLER
+// ----------------------------------------------------
+async function handleEmergency(type) {
+  resultEl.classList.add("hidden");
+  fallbackInfo.classList.add("hidden");
+
+  statusEl.textContent = "Processing...";
+  statusEl.className = "status-info";
+  statusEl.style.display = "block";
+
+  // Location fetch with timeout
+  let location = "[LOCATION UNAVAILABLE]";
+  const position = await Promise.race([
+    getLocation(),
+    new Promise((resolve) => setTimeout(() => resolve(null), 15000))
+  ]);
+
+  if (position?.coords) {
+    location = `Lat: ${position.coords.latitude.toFixed(
+      4
+    )}, Long: ${position.coords.longitude.toFixed(4)}`;
   }
+
+  // Try server
+  if (navigator.onLine) {
+    try {
+      const res = await fetch("/api/alert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, location })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        showResult(data, type, location);
+        statusEl.style.display = "none";
+        return;
+      }
+    } catch {
+      console.warn("Server error, fallback activated");
+    }
+  }
+
+  // Fall back to local dataset
+  fallbackInfo.classList.remove("hidden");
+  showResult(FALLBACK_DATA[type], type, location);
+  statusEl.style.display = "none";
+}
+
+window.handleEmergency = handleEmergency;
+
+// ----------------------------------------------------
+// FETCH AI SAFETY INSTRUCTIONS
+// ----------------------------------------------------
+async function getEmergencyInstructions(type, location = "") {
+  if (!instructionsEl) return;
+
+  // Loading state
+  statusEl.textContent = "Getting safety instructions...";
+  statusEl.className = "status-info";
+  statusEl.style.display = "block";
+
+  try {
+    const response = await fetch("/api/emergency/instructions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, location })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error("Invalid server response");
+
+    const info = data.instructions;
+
+    instructionsEl.innerHTML = `
+      <h3>${info.title}</h3>
+      <p class="summary">${info.summary}</p>
+
+      ${
+        info.steps.length
+          ? `
+      <div class="steps">
+        <h4>Steps to Take:</h4>
+        <ol>${info.steps.map((s) => `<li>${s}</li>`).join("")}</ol>
+      </div>`
+          : ""
+      }
+
+      ${
+        info.warnings.length
+          ? `
+      <div class="warnings">
+        <h4>⚠ Important Warnings:</h4>
+        <ul>${info.warnings
+          .map((w) => `<li>${w}</li>`)
+          .join("")}</ul>
+      </div>`
+          : ""
+      }
+    `;
+
+    instructionsEl.style.display = "block";
+    statusEl.style.display = "none";
+    instructionsEl.scrollIntoView({ behavior: "smooth" });
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = "Failed to load instructions.";
+    statusEl.className = "status-error";
+    setTimeout(() => (statusEl.style.display = "none"), 4000);
+  }
+}
+
+// ----------------------------------------------------
+// WHAT-TO-DO BUTTON HANDLER
+// ----------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const whatBtn = document.querySelector(".what-to-do");
+  if (!whatBtn) return;
+
+  whatBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const path = window.location.pathname;
+    let type = "general";
+    if (path.includes("earthquake")) type = "earthquake";
+    if (path.includes("fire")) type = "fire";
+    if (path.includes("flood")) type = "flood";
+    if (path.includes("tsunami")) type = "tsunami";
+
+    let location = "";
+    const pos = await getLocation();
+    if (pos?.coords) {
+      location = `Lat: ${pos.coords.latitude.toFixed(
+        4
+      )}, Long: ${pos.coords.longitude.toFixed(4)}`;
+    }
+
+    getEmergencyInstructions(type, location);
+  });
 });
 
-// Make handleEmergency globally available
-window.handleEmergency = handleEmergency;
+// ----------------------------------------------------
+// COPY SMS BUTTON
+// ----------------------------------------------------
+copySmsBtn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(smsEl.textContent);
+    const old = copySmsBtn.innerHTML;
+    copySmsBtn.innerHTML = "✓ Copied";
+    setTimeout(() => (copySmsBtn.innerHTML = old), 1500);
+  } catch {
+    alert("Failed to copy SMS");
+  }
+});

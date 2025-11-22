@@ -1,370 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tsunami Emergency - AidGen</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        :root {
-            --primary: #6C63FF;
-            --text-primary: #2D3748;
-            --text-secondary: #718096;
-            --bg-color: #F7FAFC;
-            --card-bg: #FFFFFF;
-            --border-color: #E2E8F0;
-            --emergency-tag: #077A7D;
-            --sos-button: #FF4B4B;
-            --what-to-do-bg: #FFFFFF;
-            --button-hover: rgba(0, 0, 0, 0.05);
-            --sos-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
-            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tsunami Emergency - AidGen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
+:root {
+    --primary: #6C63FF;
+    --text-primary: #2D3748;
+    --text-secondary: #718096;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --emergency-tag: #077A7D; /* Tsunami theme */
+    --sos-button: #FF4B4B;
+    --button-hover: rgba(0,0,0,0.05);
+    --sos-shadow: 0 4px 12px rgba(255,75,75,0.3);
+    --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    --chat-user-bg: #5C3E94;
+    --chat-bot-bg: #EDE7F6;
+    --chat-primary-button: #7E57C2;
+    --error-bg: #fff3cd;
+    --error-text: #856404;
+    --error-border: #ffeeba;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+body { background-color:#E0F2F1; color:var(--text-primary); }
 
-        body {
-            background-color: #E0F2F1;
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
+.aidgen-container { max-width:500px; margin:0 auto; min-height:100vh; padding-bottom:160px; background-color:#edfff083; }
 
-        .aidgen-container {
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-            min-height: 100vh;
-            background-color: #edfff083;
-            position: relative;
-            padding-bottom: 120px;
-        }
+/* Header */
+.header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background-color:var(--card-bg); border-bottom:1px solid var(--border-color); position:sticky; top:0; z-index:100; }
+.header-title { font-size:18px; font-weight:700; }
+.back-button, .notification-button { background:none; border:none; padding:8px; cursor:pointer; border-radius:50%; transition:0.2s; }
+.back-button:hover, .notification-button:hover { background-color:var(--button-hover); }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+/* Emergency Section */
+.selected-emergency { background-color:var(--card-bg); padding:20px; margin:20px; border-radius:12px; box-shadow:var(--card-shadow); border:1px solid var(--border-color); }
+.emergency-tag { font-size:12px; font-weight:600; color:var(--emergency-tag); margin-bottom:8px; }
+.emergency-type { display:flex; align-items:center; font-size:20px; font-weight:700; }
+.emergency-icon { background-color:#06202B; color:var(--emergency-tag); width:40px; height:40px; border-radius:10px; margin-right:12px; display:flex; align-items:center; justify-content:center; font-size:24px; }
 
-        .back-button, .notification-button {
-            background: none;
-            border: none;
-            padding: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
+/* SOS Button */
+@keyframes pulse { 0% { transform:scale(1); } 50% { transform:scale(1.05); } 100% { transform:scale(1); } }
+.sos-button { background-color:var(--sos-button); color:white; border:none; border-radius:16px; padding:28px 24px; display:flex; justify-content:space-between; margin:0 20px 20px; cursor:pointer; box-shadow:var(--sos-shadow); width:calc(100% - 40px); animation:pulse 2s infinite;}
+.sos-button:active { transform:scale(0.97); }
 
-        .back-button:hover, .notification-button:hover {
-            background-color: var(--button-hover);
-        }
+/* Safety Guide */
+.what-to-do { background-color:var(--card-bg); border-radius:14px; padding:18px 20px; margin:0 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; border:1px solid var(--border-color); }
+#instructions { display:none; background-color:white; border-radius:14px; padding:20px; margin:20px; border:1px solid var(--border-color); box-shadow:var(--card-shadow); }
 
-        .header-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--text-primary);
-        }
+/* Prebuilt Commands */
+#prebuilt-commands { padding:10px 20px 20px; display:flex; flex-wrap:wrap; gap:8px; }
+.prebuilt-command { background:white; border:1px solid var(--border-color); border-radius:16px; padding:8px 12px; font-size:13px; color:#4a5568; cursor:pointer; transition:all 0.2s; white-space:nowrap; margin:2px 0; }
+.prebuilt-command:hover { background:#f0f4f8; border-color:#cbd5e0; transform:translateY(-1px); }
+.prebuilt-command:active { transform:translateY(0); }
 
-        .selected-emergency {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
-        }
+/* Chatbox */
+#chatbot-box { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:95%; max-width:520px; background:var(--card-bg); border-top-left-radius:28px; border-top-right-radius:28px; border:1px solid rgba(0,0,0,0.08); box-shadow:0 20px 35px rgba(0,0,0,0.15); z-index:1000; display:flex; flex-direction:column; overflow:hidden; }
+#chat-messages { max-height:300px; overflow-y:auto; padding:15px 10px; display:flex; flex-direction:column; gap:10px; background-color:#f7f7f9; }
+.chat-msg { padding:10px 15px; border-radius:18px; max-width:85%; font-size:15px; line-height:1.4; word-wrap:break-word; box-shadow:0 1px 2px rgba(0,0,0,0.05); }
+.user-msg { background:var(--chat-user-bg); align-self:flex-end; color:white; border-bottom-right-radius:4px; }
+.bot-msg { background:var(--chat-bot-bg); align-self:flex-start; color:var(--text-primary); border-bottom-left-radius:4px; }
+.error-msg { background-color:var(--error-bg); color:var(--error-text); align-self:flex-start; border:1px solid var(--error-border); border-radius:8px; padding:10px 15px; font-weight:600; max-width:95%; }
 
-        .emergency-tag {
-            color: var(--emergency-tag);
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
+/* Chat Input */
+#chat-input { display:flex; padding:12px 15px; border-top:1px solid var(--border-color); background:var(--card-bg); }
+#chat-input input { flex:1; padding:10px 18px; border-radius:25px; border:1px solid var(--border-color); margin-right:10px; outline:none; font-size:16px; transition:border-color 0.2s; }
+#chat-input input:focus { border-color:var(--primary); }
+#chat-input button { padding:10px 18px; border:none; border-radius:25px; background-color:var(--chat-primary-button); color:white; cursor:pointer; font-weight:600; transition:0.2s; }
+#chat-input button:hover { background-color:#5E35B1; }
 
-        .emergency-type {
-            display: flex;
-            align-items: center;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .emergency-icon {
-            font-size: 24px;
-            margin-right: 12px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: #06202B;
-            border-radius: 10px;
-            color: var(--emergency-tag);
-        }
-
-        .sos-button {
-            background-color: var(--sos-button);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            padding: 28px 24px;
-            margin: 0 20px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: var(--sos-shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: calc(100% - 40px);
-        }
-
-        .sos-button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 6px rgba(255, 75, 75, 0.4);
-        }
-
-        .sos-content {
-            text-align: left;
-        }
-
-        .sos-text {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .sos-subtext {
-            font-size: 14px;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .sos-icon {
-            font-size: 36px;
-            opacity: 0.9;
-        }
-
-        .what-to-do {
-            background-color: var(--what-to-do-bg);
-            border-radius: 14px;
-            padding: 18px 20px;
-            margin: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--card-shadow);
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .what-to-do:hover {
-            background-color: #F8F9FA;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .what-to-do-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .book-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            background-color: #F0F4FF;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4C6FFF;
-            flex-shrink: 0;
-        }
-
-        .what-to-do-text {
-            text-align: left;
-        }
-
-        .what-to-do-title {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
-            color: var(--text-primary);
-        }
-
-        .what-to-do-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .arrow-icon {
-            color: var(--text-secondary);
-            font-size: 24px;
-            opacity: 0.7;
-        }
-
-        .live-assistance {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #1A202C;
-            color: white;
-            padding: 16px 20px 24px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .live-assistance-text {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0.7;
-            margin-bottom: 12px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .live-assistance-controls {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .control-button {
-            background-color: #2D3748;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 8px 18px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 80px;
-            text-align: center;
-        }
-
-        .control-button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .control-button:active {
-            transform: translateY(1px);
-        }
-
-        @media (max-width: 480px) {
-            .selected-emergency,
-            .sos-button,
-            .what-to-do {
-                margin-left: 16px;
-                margin-right: 16px;
-                width: calc(100% - 32px);
-            }
-            
-            .sos-button {
-                padding: 24px 20px;
-            }
-            
-            .sos-text {
-                font-size: 22px;
-            }
-            
-            .sos-icon {
-                font-size: 32px;
-            }
-            
-            .live-assistance-controls {
-                gap: 8px;
-            }
-            
-            .control-button {
-                padding: 8px 14px;
-                font-size: 13px;
-                min-width: 70px;
-            }
-        }
-    </style>
+@media(max-width:640px){ #chatbot-box{width:100%; left:0; transform:none; border-radius:0; max-width:none;} #chat-messages{max-height:45vh;padding:12px;} #chat-input input{font-size:14px;} }
+</style>
 </head>
 <body>
-    <div class="aidgen-container">
-        <!-- Header with navigation -->
-        <header class="header">
-            <button class="back-button" onclick="window.history.back()" aria-label="Go back">
-                <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-            </button>
-            <h1 class="header-title">AIDGEN</h1>
-            <button class="notification-button" aria-label="View notifications">
-                <span class="material-symbols-outlined" aria-hidden="true">notifications_none</span>
-            </button>
-        </header>
+<div class="aidgen-container">
+<header class="header">
+    <button class="back-button" onclick="window.history.back()"><span class="material-symbols-outlined">arrow_back</span></button>
+    <h1 class="header-title">AIDGEN</h1>
+    <button class="notification-button"><span class="material-symbols-outlined">notifications_none</span></button>
+</header>
 
-        <!-- Selected Emergency Card -->
-        <section class="selected-emergency" aria-labelledby="emergency-heading">
-            <p class="emergency-tag" id="emergency-heading">SELECTED EMERGENCY</p>
-            <div class="emergency-type">
-                <span class="emergency-icon" role="img" aria-hidden="true">🌊</span>
-                <span>TSUNAMI</span>
-            </div>
-        </section>
+<section class="selected-emergency">
+    <p class="emergency-tag">SELECTED EMERGENCY</p>
+    <div class="emergency-type"><span class="emergency-icon">🌊</span> TSUNAMI</div>
+</section>
 
-        <!-- SOS Button -->
-        <button class="sos-button" id="sos-button" aria-label="Send SOS alert">
-            <div class="sos-content">
-                <div class="sos-text">SEND SOS</div>
-                <div class="sos-subtext">Share Live Location</div>
-            </div>
-            <div class="sos-icon" role="img" aria-hidden="true">📡</div>
-        </button>
-
-        <!-- What to do Section -->
-        <a href="#safety-guide" class="what-to-do" id="safety-guide-link">
-            <div class="what-to-do-content">
-                <span class="book-icon" role="img" aria-hidden="true">📖</span>
-                <div class="what-to-do-text">
-                    <h2 class="what-to-do-title">What to do?</h2>
-                    <p class="what-to-do-subtitle">Safety guides & first steps</p>
-                </div>
-            </div>
-            <span class="material-symbols-outlined arrow-icon" aria-hidden="true">chevron_right</span>
-        </a>
+<button class="sos-button" id="sos-button">
+    <div>
+        <div style="font-size:24px; font-weight:700;">SEND SOS</div>
+        <div style="font-size:14px; opacity:0.9;">Share Live Location</div>
     </div>
+    <div style="font-size:36px;">📡</div>
+</button>
 
-    <script>
-        // Add SOS button functionality
-        document.getElementById('sos-button').addEventListener('click', function() {
-            // Add your SOS functionality here
-            alert('SOS Alert Sent! Help is on the way!');
-            // In a real app, this would trigger location sharing and emergency services notification
-        });
-    </script>
+<div class="what-to-do" id="safety-guide-link">
+    <div style="display:flex; align-items:center;">
+        <span style="font-size:24px; background:#F0F4FF; padding:12px; border-radius:12px; margin-right:16px;">📖</span>
+        <div>
+            <div style="font-weight:600;">What to do?</div>
+            <div style="font-size:14px; color:var(--text-secondary);">Safety guides & first steps</div>
+        </div>
+    </div>
+    <span class="material-symbols-outlined">chevron_right</span>
+</div>
+
+<div id="instructions"></div>
+
+<div id="prebuilt-commands">
+    <button class="prebuilt-command" data-command="Immediate actions for tsunami?">🚨 Immediate Actions</button>
+    <button class="prebuilt-command" data-command="Nearest shelters?">🏠 Find Shelters</button>
+    <button class="prebuilt-command" data-command="Prepare emergency kit?">🎒 Emergency Kit</button>
+    <button class="prebuilt-command" data-command="First aid for injuries?">🩹 First Aid</button>
+</div>
+
+<div id="chatbot-box">
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+        <input type="text" id="userInput" placeholder="Ask AidGen..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+</div>
+
+<script>
+// Geolocation + SOS
+const getCurrentPosition = () => new Promise(resolve => {
+    if (!navigator.geolocation) return resolve(null);
+    navigator.geolocation.getCurrentPosition(resolve, () => resolve(null), { enableHighAccuracy:true, timeout:15000 });
+});
+
+const sendSOS = async (type) => {
+    const position = await getCurrentPosition();
+    const payload = { type, latitude:position?.coords?.latitude, longitude:position?.coords?.longitude, location:position ? `Lat:${position.coords.latitude.toFixed(5)}, Long:${position.coords.longitude.toFixed(5)}` : null };
+    try {
+        const res = await fetch("/api/sos", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) });
+        const data = await res.json().catch(()=>null);
+        if(!res.ok || !data?.ok) throw new Error(data?.error || data?.details?.error || res.statusText);
+        alert("🚨 SOS Alert Sent!\nYour location is being shared.");
+    } catch(err){ alert(`SOS failed: ${err.message}`); }
+};
+document.getElementById('sos-button').addEventListener('click', async ()=>{ await sendSOS('tsunami'); });
+
+// Safety guide toggle
+document.getElementById("safety-guide-link").addEventListener("click", e=>{
+    e.preventDefault();
+    const box = document.getElementById("instructions");
+    box.innerHTML = `
+        <h3 style="font-weight:700;margin-bottom:10px;">🌊 Tsunami Safety Instructions</h3>
+        <ul style="padding-left:20px; line-height:1.7;">
+            <li>Immediately move to <strong>higher ground</strong>.</li>
+            <li>Follow <strong>official evacuation routes</strong>.</li>
+            <li>Stay away from <strong>beaches and coastal areas</strong>.</li>
+            <li>Listen to <strong>emergency alerts and warnings</strong>.</li>
+            <li>If in water, hold onto something that floats.</li>
+            <li>The first wave may not be the largest — <strong>stay alert</strong> for hours.</li>
+        </ul>`;
+    box.style.display="block"; box.scrollIntoView({behavior:"smooth"});
+});
+
+// Chatbot
+const chatMessages = document.getElementById("chat-messages");
+const chatInputEl = document.getElementById("userInput");
+const chatButtonEl = document.querySelector("#chat-input button");
+const CHAT_API_URL = `${window.location.origin}/api/chat`;
+
+const setChatButtonLoading = (isLoading) => { if(!chatButtonEl) return; chatButtonEl.disabled=isLoading; chatButtonEl.innerText=isLoading?"Thinking...":"Send"; chatButtonEl.style.opacity=isLoading?0.7:1; };
+
+async function sendMessage(){
+    if(!chatInputEl) return;
+    const text = chatInputEl.value.trim();
+    if(!text) return;
+    addMessage("user", text);
+    chatInputEl.value="";
+    setChatButtonLoading(true);
+    try{
+        const res = await fetch(CHAT_API_URL,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ message:text }) });
+        const data = await res.json().catch(()=>null);
+        if(res.ok && data?.ok) addMessage("bot", data.reply);
+        else addMessage("bot", `⚠️ Error: ${data?.error||data?.details||res.statusText||"Unknown chat error"}`);
+    } catch(err){ addMessage("bot", "⚠️ Error: Cannot connect to chat service."); }
+    finally{ setChatButtonLoading(false); }
+}
+
+function addMessage(sender,text){
+    const div = document.createElement("div");
+    if(sender==="bot" && text.includes("Error: Cannot connect")) div.className="chat-msg error-msg";
+    else div.className = sender==="user"?"chat-msg user-msg":"chat-msg bot-msg";
+    div.innerText=text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Prebuilt commands
+document.querySelectorAll(".prebuilt-command").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        const cmd = btn.getAttribute("data-command");
+        if(!cmd) return;
+        chatInputEl.value=cmd;
+        sendMessage();
+    });
+});
+</script>
 </body>
+</html>
