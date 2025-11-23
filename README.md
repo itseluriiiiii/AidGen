@@ -13,7 +13,7 @@ AidGen is a disaster guidance and emergency assistance web application that prov
 
 ## 📂 Project Structure
 
-```
+``` 
 aidgen/
 │
 ├── backend/
